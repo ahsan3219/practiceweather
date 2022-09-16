@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <style>
         body {
-            background-image: url("https://images.pexels.com/photos/209831/pexels-photo-209831.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            background-image: url("https://tasbihdigital.com/wp-content/uploads/2022/04/HD-Masjid-Wallpaper.jpg"
                 );
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -62,7 +62,7 @@
 
 
     <div class="main">
-        <h1 style="display: flex; justify-content: center;">Weather app</h1>
+        <h1 style="display: flex; justify-content: center; color: aliceblue; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Weather app</h1>
 
 
         <form style="display: flex; justify-content: center; align-items: center;"
@@ -92,54 +92,26 @@
 
             console.log("cityName: ", cityName);
 
-            // get current weather 
-            axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=e0f99c494c2ce394a18cc2fd3f100543&units=metric`)
-                .then(function (response) {
-
-                    document.querySelector("#current").innerHTML =
-                        `<div class="weatherCard">
-                        <span id="upResult"></span>
-                        <h1 id="result"></h1>
-                        <img src="" id="icon" />
-                        <br />
-                        <span id="downResult"></span>
-                    </div>`
-
-
-                    // handle success
-                    console.log(response.data);
-
-                    document.querySelector("#result").innerHTML =
-                        `${response.data.main.temp}°C`;
-                    document.querySelector("#upResult").innerHTML =
-                        `${response.data.name} <br/> Now`;
-                    document.querySelector("#downResult").innerHTML =
-                        `${response.data.main.temp_min}°C - ${response.data.main.temp_max}°C `;
-
-                    document.querySelector("#icon").src = `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@4x.png`
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-
+        
             // get 5 day forecast
-            axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=e0f99c494c2ce394a18cc2fd3f100543&units=metric`)
+            axios.get(`http://api.aladhan.com/v1/calendarByAddress?address=${cityName}`)
+
                 .then(function (response) {
+
 
 
                     console.log("forecast: ", response.data);
-
+                    console.log(" status: ", response.data.status );
                     let forecastDiv = document.querySelector("#forecast");
                     forecastDiv.innerHTML = ""
 
-                    response.data.list.map(eachItem => {
+                    response.data.data.map(eachItem => {
 
                         forecastDiv.innerHTML +=
                             `<div class="weatherCard">
-                                <span>${moment(eachItem.dt_txt).format("ddd D/M")}</span>
+                                <span>${moment(eachItem.date).format("ddd D/M")}</span>
                                 <br/>
-                                <span>${moment(eachItem.dt_txt).format("ha")}</span>
+                                <span>${moment(eachItem.date).format("ha")}</span>
                                 <h1 >${eachItem?.main?.temp.toFixed(0)}°C</h1>
                                 <span>${eachItem?.weather[0].description}</span>
                                 <img src="https://openweathermap.org/img/wn/${eachItem?.weather[0]?.icon}@2x.png"/>
@@ -158,4 +130,4 @@
     </script>
 </body>
 
-</html>
+</html> 
